@@ -24,6 +24,9 @@
     <ClCompile Include="src\Player.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\Asteroid.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Game.hpp">
@@ -32,10 +35,24 @@
     <ClInclude Include="src\Player.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\Asteroid.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="assets\Spaceship.png">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="assets\Asteroids.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="assets\Asteroids.aseprite">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="assets\Spaceship.aseprite">
+      <Filter>Resource Files</Filter>
+    </None>
   </ItemGroup>
 </Project>

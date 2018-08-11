@@ -17,30 +17,36 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
 #pragma once
-#include "Player.hpp"
-#include "Asteroid.hpp"
 #include <SFML/Graphics.hpp>
-#include <vector>
-#include <memory>
+#include <random>
+#include <chrono>
 
-class Game
+#define _USE_MATH_DEFINES
+#include <math.h>
+
+class Asteroid : public sf::Drawable
 {
 public:
-	Game();
-	void start();
-	~Game();
+	Asteroid(const sf::IntRect& GameArea);
+	void draw(sf::RenderTarget& Target, sf::RenderStates States) const;
+	void update();
+	void handleCollision(const Asteroid& Object);
+	~Asteroid();
 
 private:
-	static const sf::Color BACKGROUND_COLOR;
+	const sf::IntRect GameArea;
+	const float MIN_SPEED = 0.005f, MAX_SPEED = 0.008f;
+	const sf::Vector2f SIZE = { 18, 18 };
 
-	sf::RenderWindow Window;
-	sf::IntRect GameArea;
-	Player MainPlayer;
-	std::vector<std::unique_ptr<Asteroid>> Asteroids;
+	float Speed;
 
-	void processEvents();
-	void render();
-	void update();
-	void handleInput();
+	sf::Sprite Sprite;
+	sf::Image SpriteSheet;
+	sf::Texture SpriteTexture;
+	sf::Vector2f Direction;
+
+	const Asteroid* LastCollision = NULL;
+
+	void randomize();
 };
 

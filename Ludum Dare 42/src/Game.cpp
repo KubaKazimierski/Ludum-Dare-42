@@ -23,8 +23,11 @@ const sf::Color Game::BACKGROUND_COLOR
 
 Game::Game()
 	: Window(sf::VideoMode(160, 144), "IAB", sf::Style::Titlebar | sf::Style::Close),
-	MainPlayer(sf::IntRect(0, 0, Window.getSize().x, Window.getSize().y))
+	 GameArea(0, 0, Window.getSize().x, Window.getSize().y), MainPlayer(GameArea)
 {
+	Asteroids.push_back(std::make_unique<Asteroid>(GameArea));
+	Asteroids.push_back(std::make_unique<Asteroid>(GameArea));
+	Asteroids.push_back(std::make_unique<Asteroid>(GameArea));
 }
 
 void Game::start()
@@ -45,15 +48,12 @@ void Game::start()
 		{
 			processEvents();
 
-			MainPlayer.handleInput();
-			MainPlayer.update();
-
+			handleInput();
+			update();
 			render();
 
 			Delta = sf::Time::Zero;
 		}
-
-		
 	}
 }
 
@@ -69,10 +69,36 @@ void Game::processEvents()
 	}
 }
 
+void Game::update()
+{
+	MainPlayer.update();
+
+	for(size_t i = 0; i < Asteroids.size(); ++i)
+	{
+		Asteroids[i]->update();
+
+		for(size_t j = i + 1; j < Asteroids.size(); ++j)
+		{
+			Asteroids[i]->handleCollision(*Asteroids[j]);
+		}
+	}
+}
+
+void Game::handleInput()
+{
+	MainPlayer.handleInput();
+}
+
 void Game::render()
 {
 	Window.clear(BACKGROUND_COLOR);
 	Window.draw(MainPlayer);
+
+	for(auto& Asteroid : Asteroids)
+	{
+		Window.draw(*Asteroid);
+	}
+
 	Window.display();
 }
 

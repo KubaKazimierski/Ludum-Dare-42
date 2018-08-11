@@ -25,21 +25,22 @@ Player::Player(const sf::IntRect& GameArea)
 	SpriteSheet.loadFromFile("assets/Spaceship.png");
 	setSpriteTexture();
 
-	Sprite.setPosition(20, 20);
+	Sprite.setPosition(GameArea.left + (GameArea.width / 2) - SIZE.x / 2,
+					   GameArea.top + (GameArea.height / 2) - SIZE.y / 2);
 }
 
 void Player::setSpriteTexture()
 {
-	ActualTexture.loadFromImage(SpriteSheet,
+	SpriteTexture.loadFromImage(SpriteSheet,
 								sf::IntRect(SIZE.x * ActualMode, 0,
 											static_cast<int>(SIZE.x),
 											static_cast<int>(SIZE.y)));
-	Sprite.setTexture(ActualTexture);
+	Sprite.setTexture(SpriteTexture);
 }
 
-void Player::draw(sf::RenderTarget& Target, sf::RenderStates states) const
+void Player::draw(sf::RenderTarget& Target, sf::RenderStates States) const
 {
-	Target.draw(Sprite, states);
+	Target.draw(Sprite, States);
 }
 
 void Player::update()

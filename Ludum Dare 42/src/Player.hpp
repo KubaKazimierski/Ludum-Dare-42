@@ -32,12 +32,13 @@ class Player : public sf::Drawable
 
 public:
 	Player(const sf::IntRect& GameArea);
-	void draw(sf::RenderTarget& Target, sf::RenderStates state) const;
+	void draw(sf::RenderTarget& Target, sf::RenderStates States) const;
 	void update();
 	void handleInput();
 	~Player();
 
 private:
+	const sf::IntRect GameArea;
 	const sf::Vector2f SIZE = { 18, 18 };
 	const float MAX_SPEED = 0.025f,
 		ACCELERATION = 0.0025f,
@@ -45,9 +46,8 @@ private:
 
 	sf::Sprite Sprite;
 	sf::Image SpriteSheet;
-	sf::Texture ActualTexture;
+	sf::Texture SpriteTexture;
 	sf::Vector2f  Direction;
-	sf::IntRect GameArea;
 
 	Mode ActualMode;
 
