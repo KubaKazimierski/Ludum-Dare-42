@@ -229,6 +229,14 @@ void Player::handleCollision(Asteroid& Object)
 	}
 }
 
+void Player::handleCollision(Bomb& Object)
+{
+	if(Sprite.getGlobalBounds().intersects(Object.getGlobalBounds()))
+	{
+		Object.activate();
+	}
+}
+
 bool Player::didLose()
 {
 	return ExplosionState == 5;

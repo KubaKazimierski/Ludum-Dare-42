@@ -18,6 +18,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #pragma once
 #include "Asteroid.hpp"
+#include "Bomb.hpp"
 #include <SFML/Graphics.hpp>
 
 #define _USE_MATH_DEFINES
@@ -38,6 +39,7 @@ public:
 	void update();
 	void handleInput();
 	void handleCollision(Asteroid& Object);
+	void handleCollision(Bomb& Object);
 	bool didLose();
 	unsigned int getHP();
 	~Player();

@@ -32,7 +32,7 @@ public:
 	void draw(sf::RenderTarget& Target, sf::RenderStates States) const;
 	void update();
 	void handleCollision(Asteroid& Object);
-	sf::FloatRect getGlobalBounds();
+	const sf::FloatRect getGlobalBounds();
 	void destroy();
 	bool shouldBeRemoved();
 	~Asteroid();

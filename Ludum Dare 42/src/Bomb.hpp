@@ -16,16 +16,33 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-#ifndef _DEBUG
-#pragma comment(linker, "/SUBSYSTEM:windows /ENTRY:mainCRTStartup")
-#endif
+#pragma once
+#include <SFML/Graphics.hpp>
+#include <random>
 
-#include "Game.hpp"
-
-int main()
+class Bomb : public sf::Drawable
 {
-	Game game;
-	game.start();
+public:
+	Bomb(const sf::IntRect& GameArea);
+	void update();
+	void activate();
+	bool wasActivated();
+	bool shouldBeRemoved();
+	const sf::FloatRect getGlobalBounds();
+	void draw(sf::RenderTarget& Target, sf::RenderStates States) const;
+	~Bomb();
 
-	return 0;
-}
+private:
+	const unsigned int EXPIRE_TIME = 10;
+	const sf::IntRect GameArea;
+
+	sf::Sprite Sprite;
+	sf::Texture Texture;
+	sf::Clock Clock;
+	sf::Time Delta;
+
+	bool isActivated = false, dontDraw = false;
+
+	void randomize();
+};
+

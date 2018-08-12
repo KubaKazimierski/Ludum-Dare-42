@@ -121,13 +121,18 @@ void Menu::setTexts()
 					);
 					(*ActualText)->setPosition(
 						GameArea.left + GameArea.width / 2  -((*ActualText)->getGlobalBounds().width  / 2),
-						(i == 1 ? GameArea.top + 5 : GameArea.top + GameArea.height - 20)
+						(i == 1 ? GameArea.top + 1 : GameArea.top + GameArea.height - 20)
 					);
 				}
 
 				std::string AboutText =
 					"It is simple game about\n"
 					"avoiding asteroids.\n"
+					"You earn points every\n"
+					"second. The more asteroids,\n"
+					"the more points.\n"
+					"You can collect bombs to\n"
+					"remove half of asteroids."
 					"\nControls:\n"
 					"[ W, S, A, D ] - movement\n"
 					"\nGame is licensed under\n"
@@ -147,7 +152,8 @@ void Menu::setTexts()
 					sf::Color(155, 188, 15, 255)
 				);
 
-				(*ActualText)->setPosition(GameArea.left + 5, 20);
+				(*ActualText)->setPosition(GameArea.left + 5,
+					(*(Texts.begin() + 1))->getGlobalBounds().top + (*(Texts.begin() + 1))->getGlobalBounds().height + 2);
 
 				break;
 			}
@@ -238,7 +244,7 @@ void Menu::handleInput()
 	{
 		case AboutScreen:
 		{
-			if(sf::Keyboard::isKeyPressed(sf::Keyboard::K)
+			if(sf::Keyboard::isKeyPressed(sf::Keyboard::Enter)
 			   && MenuChangeClock.getElapsedTime().asMilliseconds() > TIME_BETWEEN_MENU_CHANGE)
 			{
 				ActualType = MainMenu;
@@ -266,7 +272,7 @@ void Menu::handleInput()
 				restartPointer();
 			}
 
-			if(sf::Keyboard::isKeyPressed(sf::Keyboard::K)
+			if(sf::Keyboard::isKeyPressed(sf::Keyboard::Enter)
 			   && SelectedOption == 1
 			   && MenuChangeClock.getElapsedTime().asMilliseconds() > TIME_BETWEEN_MENU_CHANGE)
 			{
@@ -283,7 +289,7 @@ void Menu::handleInput()
 
 			}
 
-			if(sf::Keyboard::isKeyPressed(sf::Keyboard::K)
+			if(sf::Keyboard::isKeyPressed(sf::Keyboard::Enter)
 			   && SelectedOption == 0
 			   && MenuChangeClock.getElapsedTime().asMilliseconds() > TIME_BETWEEN_MENU_CHANGE)
 			{

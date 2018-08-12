@@ -35,7 +35,7 @@ Asteroid::Asteroid(const sf::IntRect& GameArea)
 	ExplosionSound.openFromFile("assets/Explosion.wav");
 
 	randomize();
-	Sprite.setRadius(8);
+	Sprite.setRadius(9);
 	Sprite.setTexture(&SpriteTexture);
 }
 
@@ -136,7 +136,7 @@ void Asteroid::handleCollision(Asteroid& Object)
 
 }
 
-sf::FloatRect Asteroid::getGlobalBounds()
+const sf::FloatRect Asteroid::getGlobalBounds()
 {
 	return (isBeingDestroyed ? 
 			NotExist

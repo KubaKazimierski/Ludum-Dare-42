@@ -19,6 +19,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 #pragma once
 #include "Player.hpp"
 #include "Asteroid.hpp"
+#include "Bomb.hpp"
 #include "HPIndicator.hpp"
 #include "Menu.hpp"
 #include <SFML/Graphics.hpp>
@@ -52,7 +53,7 @@ private:
 	sf::IntRect GameArea;
 	sf::Sprite SplashScreen;
 	sf::Texture SplashScreenTexture;
-	sf::Clock SpawnClock, PointsClock;
+	sf::Clock SpawnClock, PointsClock, BombClock;
 	sf::Text PointsCounter;
 
 	State ActualState;
@@ -60,9 +61,10 @@ private:
 	Menu MenuSystem;
 	HPIndicator Indicator;
 	std::vector<std::unique_ptr<Asteroid>> Asteroids;
+	std::vector<std::unique_ptr<Bomb>> Bombs;
 
 	bool wasGameStarted = false;
-	unsigned int NumberOfFrames = 0, NextSpawn;
+	unsigned int NumberOfFrames = 0, NextSpawn, NextBomb = 15;
 	unsigned long long int Points;
 
 	void initPointsCounter();
@@ -71,9 +73,12 @@ private:
 	void render();
 	void update();
 	void updateAsteroids();
+	void updateBombs();
+	void bomb();
 	void updatePoints();
 	void updatePointsCounter();
 	void spawnAsteroids();
+	void spawnBombs();
 	void handleInput();
 };
 

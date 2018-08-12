@@ -26,6 +26,10 @@ Game::Game()
 	 GameArea(0, 0, Window.getSize().x, Window.getSize().y),
 	 MainPlayer(GameArea), Indicator(GameArea), MenuSystem(GameArea), ActualState(Splash)
 {
+	sf::Image Icon;
+	Icon.loadFromFile("assets/Icon.png");
+	Window.setIcon(18, 18, Icon.getPixelsPtr());
+
 	SplashScreenTexture.loadFromFile("assets/SplashScreen.png");
 	SplashScreen.setTexture(SplashScreenTexture);
 	SplashScreen.setPosition(0, 0);
@@ -50,9 +54,12 @@ void Game::initPointsCounter()
 void Game::restart()
 {
 	Points = 0;
+	NextBomb = 10;
 	MainPlayer.init();
 	Asteroids.clear();
+	Bombs.clear();
 	PointsClock.restart();
+	BombClock.restart();
 }
 
 void Game::start()
@@ -108,9 +115,11 @@ void Game::update()
 		case Play:
 		{
 			spawnAsteroids();
+			spawnBombs();
 
 			MainPlayer.update();
 			updateAsteroids();
+			updateBombs();
 			Indicator.update(MainPlayer.getHP());
 
 			if(MainPlayer.didLose())
@@ -190,6 +199,26 @@ void Game::updateAsteroids()
 	}
 }
 
+void Game::updateBombs()
+{
+	for(int i = 0; i < Bombs.size(); ++i)
+	{
+		Bombs[i]->update();
+		MainPlayer.handleCollision(*Bombs[i]);
+
+		if(Bombs[i]->shouldBeRemoved())
+		{
+			if(Bombs[i]->wasActivated())
+			{
+				bomb();
+			}
+
+			Bombs.erase(Bombs.begin() + i);
+			--i;
+		}
+	}
+}
+
 void Game::spawnAsteroids()
 {
 	std::random_device Device;
@@ -209,6 +238,39 @@ void Game::spawnAsteroids()
 		Asteroids.push_back(std::make_unique<Asteroid>(GameArea));
 		NextSpawn = TimeDistribution(Device);
 		SpawnClock.restart();
+	}
+}
+
+void Game::spawnBombs()
+{
+	std::random_device Device;
+	std::uniform_int_distribution<unsigned int> NextPowerUpDistribution(9, 15);
+
+	if(BombClock.getElapsedTime().asSeconds() > NextBomb)
+	{
+		NextBomb = NextPowerUpDistribution(Device);
+		Bombs.push_back(std::make_unique<Bomb>(GameArea));
+		BombClock.restart();
+	}
+}
+
+void Game::bomb()
+{
+	const unsigned int NUMBER_OF_ASTEROIDS = Asteroids.size();
+
+	if(NUMBER_OF_ASTEROIDS != 0)
+	{
+		std::random_device Device;
+		std::uniform_int_distribution<unsigned int> AsteroidsDistribution;
+
+		for(int i = 0;
+			  i < (NUMBER_OF_ASTEROIDS < 2 ? 1 : NUMBER_OF_ASTEROIDS / 2); ++i)
+		{
+			AsteroidsDistribution =
+				std::uniform_int_distribution<unsigned int>(0, Asteroids.size() - 1);
+
+			Asteroids[AsteroidsDistribution(Device)]->destroy();
+		}
 	}
 }
 
@@ -263,6 +325,11 @@ void Game::render()
 	{
 		case Play:
 		{
+			for(auto& Bomb : Bombs)
+			{
+				Window.draw(*Bomb);
+			}
+
 			Window.draw(MainPlayer);
 
 			for(auto& Asteroid : Asteroids)

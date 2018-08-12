@@ -42,6 +42,9 @@
     <ClCompile Include="src\Menu.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\Bomb.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Game.hpp">
@@ -57,6 +60,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\Menu.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="resource.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Bomb.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -77,6 +86,15 @@
       <Filter>Resource Files\Graphics</Filter>
     </Image>
     <Image Include="assets\Spaceship.png">
+      <Filter>Resource Files\Graphics</Filter>
+    </Image>
+    <Image Include="assets\Icon.png">
+      <Filter>Resource Files\Graphics</Filter>
+    </Image>
+    <Image Include="assets\Icon.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\Bomb.png">
       <Filter>Resource Files\Graphics</Filter>
     </Image>
   </ItemGroup>
@@ -102,6 +120,12 @@
     <None Include="assets\Logo.aseprite">
       <Filter>Resource Files\Graphics</Filter>
     </None>
+    <None Include="openal32.dll">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="assets\Bomb.aseprite">
+      <Filter>Resource Files\Graphics</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Font Include="assets\font\LCD_Solid.ttf">
@@ -112,5 +136,10 @@
     <Media Include="assets\Explosion.wav">
       <Filter>Resource Files\Sounds</Filter>
     </Media>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Ludum Dare 42.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
   </ItemGroup>
 </Project>
