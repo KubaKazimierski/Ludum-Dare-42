@@ -18,6 +18,7 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 
 #pragma once
 #include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
 #include <random>
 #include <chrono>
 
@@ -38,7 +39,7 @@ public:
 
 private:
 	static sf::Image SpriteSheet, ExplosionSheet;
-	static bool wereSheetsLoaded;
+	static bool wereAssetsLoaded;
 
 	const sf::IntRect GameArea;
 	const float MIN_SPEED = 1.5f, MAX_SPEED = 2.0f;
@@ -51,9 +52,9 @@ private:
 	unsigned int State = 0;
 
 	sf::FloatRect LastPenetration;
-
 	sf::CircleShape Sprite;
 	sf::Texture SpriteTexture;
+	sf::Music ExplosionSound;
 	sf::Vector2f Direction;
 	sf::Clock Clock;
 

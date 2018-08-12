@@ -16,6 +16,12 @@
     <Filter Include="Resource Files\Font">
       <UniqueIdentifier>{3bbb6b75-3e69-45e4-902c-b50a86e3c76c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resource Files\Graphics">
+      <UniqueIdentifier>{6778cad6-a051-4ca9-b673-95052e9876ea}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Sounds">
+      <UniqueIdentifier>{86d56f76-4d7c-4116-a4d6-2ecdfecffb88}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Main.cpp">
@@ -55,46 +61,56 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Image Include="assets\Spaceship.png">
-      <Filter>Resource Files</Filter>
+    <Image Include="assets\Splashscreen.png">
+      <Filter>Resource Files\Graphics</Filter>
     </Image>
     <Image Include="assets\Asteroids.png">
-      <Filter>Resource Files</Filter>
-    </Image>
-    <Image Include="assets\Heart.png">
-      <Filter>Resource Files</Filter>
+      <Filter>Resource Files\Graphics</Filter>
     </Image>
     <Image Include="assets\Explosion.png">
-      <Filter>Resource Files</Filter>
+      <Filter>Resource Files\Graphics</Filter>
     </Image>
-    <Image Include="assets\Splashscreen.png">
-      <Filter>Resource Files</Filter>
+    <Image Include="assets\Heart.png">
+      <Filter>Resource Files\Graphics</Filter>
     </Image>
     <Image Include="assets\Logo.png">
-      <Filter>Resource Files</Filter>
+      <Filter>Resource Files\Graphics</Filter>
+    </Image>
+    <Image Include="assets\Spaceship.png">
+      <Filter>Resource Files\Graphics</Filter>
     </Image>
   </ItemGroup>
   <ItemGroup>
+    <None Include="assets\Splashscreen.aseprite">
+      <Filter>Resource Files\Graphics</Filter>
+    </None>
     <None Include="assets\Asteroids.aseprite">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="assets\Spaceship.aseprite">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="assets\Heart.aseprite">
-      <Filter>Resource Files</Filter>
+      <Filter>Resource Files\Graphics</Filter>
     </None>
     <None Include="assets\Explosion.aseprite">
-      <Filter>Resource Files</Filter>
+      <Filter>Resource Files\Graphics</Filter>
     </None>
-    <None Include="assets\Splashscreen.aseprite">
-      <Filter>Resource Files</Filter>
+    <None Include="assets\Heart.aseprite">
+      <Filter>Resource Files\Graphics</Filter>
     </None>
-    <None Include="assets\Logo.aseprite" />
+    <None Include="assets\Spaceship.aseprite">
+      <Filter>Resource Files\Graphics</Filter>
+    </None>
+    <None Include="assets\Explosion.sfs">
+      <Filter>Resource Files\Sounds</Filter>
+    </None>
+    <None Include="assets\Logo.aseprite">
+      <Filter>Resource Files\Graphics</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Font Include="assets\font\LCD_Solid.ttf">
       <Filter>Resource Files\Font</Filter>
     </Font>
+  </ItemGroup>
+  <ItemGroup>
+    <Media Include="assets\Explosion.wav">
+      <Filter>Resource Files\Sounds</Filter>
+    </Media>
   </ItemGroup>
 </Project>

@@ -23,6 +23,7 @@ Player::Player(const sf::IntRect& GameArea)
 	: Direction(0, 0), GameArea(GameArea), ActualMode(Idle)
 {
 	SpriteSheet.loadFromFile("assets/Spaceship.png");
+	ExplosionSheet.loadFromFile("assets/Explosion.png");
 	init();
 }
 
@@ -31,6 +32,7 @@ void Player::init()
 	HP = MAX_HP;
 	Blink = false;
 	isBlinking = false;
+	ExplosionState = 0;
 	setSpriteTexture();
 	Sprite.setPosition(GameArea.left + (GameArea.width / 2) - SIZE.x / 2,
 					   GameArea.top + (GameArea.height / 2) - SIZE.y / 2);
@@ -55,12 +57,20 @@ void Player::draw(sf::RenderTarget& Target, sf::RenderStates States) const
 
 void Player::update()
 {
-	move();
-
-	if(Blink)
+	if(HP != 0)
 	{
-		blink();
+		move();
+
+		if(Blink)
+		{
+			blink();
+		}
 	}
+	else
+	{
+		destroy();
+	}
+	
 }
 
 void Player::move()
@@ -126,6 +136,30 @@ void Player::blink()
 	}
 }
 
+void Player::destroy()
+{
+	if(!isBeingDestroyed)
+	{
+		isBeingDestroyed = true;
+		ExplosionState = 0;
+		SpriteTexture.loadFromImage(ExplosionSheet,
+									sf::IntRect(static_cast<int>(SIZE.x), 0,
+												static_cast<int>(SIZE.x), static_cast<int>(SIZE.y)));
+		Sprite.setTexture(SpriteTexture);
+		Clock.restart();
+	}
+
+	if(Clock.getElapsedTime().asMilliseconds() > 60 && ExplosionState != 5)
+	{
+		SpriteTexture.loadFromImage(ExplosionSheet,
+									sf::IntRect(static_cast<int>(SIZE.x) * ExplosionState, 0,
+												static_cast<int>(SIZE.x), static_cast<int>(SIZE.y)));
+		Sprite.setTexture(SpriteTexture);
+		Clock.restart();
+		++ExplosionState;
+	}
+}
+
 unsigned int Player::getHP()
 {
 	return HP;
@@ -187,7 +221,7 @@ void Player::handleCollision(Asteroid& Object)
 	}
 
 	if(Sprite.getGlobalBounds().intersects(Object.getGlobalBounds()) 
-	   && !Blink)
+	   && !Blink && HP > 0)
 	{
 		Object.destroy();
 		Blink = true;
@@ -197,7 +231,7 @@ void Player::handleCollision(Asteroid& Object)
 
 bool Player::didLose()
 {
-	return HP == 0;
+	return ExplosionState == 5;
 }
 
 Player::~Player()

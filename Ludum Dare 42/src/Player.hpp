@@ -51,7 +51,7 @@ private:
 		DECELERATION = 0.5f;
 
 	sf::Sprite Sprite;
-	sf::Image SpriteSheet;
+	sf::Image SpriteSheet, ExplosionSheet;
 	sf::Texture SpriteTexture;
 	sf::Vector2f  Direction;
 	sf::Clock Clock;
@@ -60,12 +60,13 @@ private:
 	Mode ActualMode;
 
 	float Speed = 0;
-	unsigned int HP = 6, NumberOfBlinks = 0;
-	bool Blink, isBlinking, DontDraw = false;
+	unsigned int HP = 6, NumberOfBlinks = 0, ExplosionState = 0;
+	bool Blink, isBlinking, DontDraw = false, isBeingDestroyed = false;
 
 	void setSpriteTexture();
 	void move();
 	bool canMove();
 	void blink();
+	void destroy();
 };
 

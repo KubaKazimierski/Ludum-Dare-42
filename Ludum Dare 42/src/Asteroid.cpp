@@ -19,17 +19,20 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 #include "Asteroid.hpp"
 
 sf::Image Asteroid::SpriteSheet, Asteroid::ExplosionSheet;
-bool Asteroid::wereSheetsLoaded = false;
+
+bool Asteroid::wereAssetsLoaded = false;
 
 Asteroid::Asteroid(const sf::IntRect& GameArea)
 	: GameArea(GameArea), LastPenetration(0, 0, 0, 0)
 {
-	if(!wereSheetsLoaded)
+	if(!wereAssetsLoaded)
 	{
 		SpriteSheet.loadFromFile("assets/Asteroids.png");
 		ExplosionSheet.loadFromFile("assets/Explosion.png");
-		wereSheetsLoaded = true;
+		wereAssetsLoaded = true;
 	}
+
+	ExplosionSound.openFromFile("assets/Explosion.wav");
 
 	randomize();
 	Sprite.setRadius(8);
@@ -145,6 +148,7 @@ void Asteroid::destroy()
 	if(!isBeingDestroyed)
 	{
 		isBeingDestroyed = true;
+		ExplosionSound.play();
 		SpriteTexture.loadFromImage(ExplosionSheet,
 									sf::IntRect(static_cast<int>(SIZE.x), 0,
 												static_cast<int>(SIZE.x), static_cast<int>(SIZE.y)));
@@ -152,7 +156,7 @@ void Asteroid::destroy()
 		Clock.restart();
 	}
 
-	if(Clock.getElapsedTime().asMilliseconds() > 20 && State != 5)
+	if(Clock.getElapsedTime().asMilliseconds() > 60 && State != 5)
 	{
 		SpriteTexture.loadFromImage(ExplosionSheet,
 									sf::IntRect(static_cast<int>(SIZE.x) * State, 0,
@@ -170,4 +174,5 @@ bool Asteroid::shouldBeRemoved()
 
 Asteroid::~Asteroid()
 {
+	ExplosionSound.stop();
 }
