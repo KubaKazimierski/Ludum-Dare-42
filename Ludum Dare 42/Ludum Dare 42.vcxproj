@@ -142,23 +142,38 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\Menu.cpp" />
+    <ClCompile Include="src\HPIndicator.cpp" />
     <ClCompile Include="src\Asteroid.cpp" />
     <ClCompile Include="src\Player.cpp" />
     <ClCompile Include="src\Game.cpp" />
     <ClCompile Include="src\Main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\Menu.hpp" />
+    <ClInclude Include="src\HPIndicator.hpp" />
     <ClInclude Include="src\Asteroid.hpp" />
     <ClInclude Include="src\Player.hpp" />
     <ClInclude Include="src\Game.hpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="assets\Asteroids.png" />
+    <Image Include="assets\Explosion.png" />
+    <Image Include="assets\Heart.png" />
+    <Image Include="assets\Logo.png" />
+    <Image Include="assets\Splashscreen.png" />
     <Image Include="assets\Spaceship.png" />
   </ItemGroup>
   <ItemGroup>
     <None Include="assets\Asteroids.aseprite" />
+    <None Include="assets\Explosion.aseprite" />
+    <None Include="assets\Heart.aseprite" />
+    <None Include="assets\Logo.aseprite" />
+    <None Include="assets\Splashscreen.aseprite" />
     <None Include="assets\Spaceship.aseprite" />
+  </ItemGroup>
+  <ItemGroup>
+    <Font Include="assets\font\LCD_Solid.ttf" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

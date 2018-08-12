@@ -23,8 +23,15 @@ Player::Player(const sf::IntRect& GameArea)
 	: Direction(0, 0), GameArea(GameArea), ActualMode(Idle)
 {
 	SpriteSheet.loadFromFile("assets/Spaceship.png");
-	setSpriteTexture();
+	init();
+}
 
+void Player::init()
+{
+	HP = MAX_HP;
+	Blink = false;
+	isBlinking = false;
+	setSpriteTexture();
 	Sprite.setPosition(GameArea.left + (GameArea.width / 2) - SIZE.x / 2,
 					   GameArea.top + (GameArea.height / 2) - SIZE.y / 2);
 }
@@ -40,32 +47,44 @@ void Player::setSpriteTexture()
 
 void Player::draw(sf::RenderTarget& Target, sf::RenderStates States) const
 {
-	Target.draw(Sprite, States);
+	if(!DontDraw)
+	{
+		Target.draw(Sprite, States);
+	}
 }
 
 void Player::update()
 {
+	move();
+
+	if(Blink)
+	{
+		blink();
+	}
+}
+
+void Player::move()
+{
 	static const sf::Vector2f ZERO = { 0, 0 };
+	ActualMode = Idle;
 
 	if(Direction != ZERO)
 	{
+		ActualMode = Moving;
 		if(Speed < MAX_SPEED)
 		{
-			ActualMode = Moving;
 			Speed += ACCELERATION;
 		}
-		
+
 	}
 	else
 	{
 		if(Speed < DECELERATION)
 		{
-			ActualMode = Idle;
-			Speed == 0;
+			Speed = 0;
 		}
 		else
 		{
-			ActualMode = Moving;
 			Speed -= DECELERATION;
 		}
 	}
@@ -74,34 +93,42 @@ void Player::update()
 	{
 		Sprite.setPosition(Sprite.getPosition() + Direction * Speed);
 	}
-	
+
 	setSpriteTexture();
 	Direction = ZERO;
 }
 
-void Player::calculateRealDirection()
+void Player::blink()
 {
-	float Angle;
-
-	if(Direction.x != 0 && Direction.y != 0)
+	if(!isBlinking)
 	{
-		int Sum = Direction.x + Direction.y;
-
-		if(Sum == 2)
-		{
-			Angle = 3 * (M_PI / 4);
-		}
-		else if(Sum == -2)
-		{
-			Angle = 7 * (M_PI / 4);
-		}
-		else
-		{
-			Angle = (Direction.x < 0 ? 5 : 1) * (M_PI / 4);
-		}
-
-		Direction = sf::Vector2f(sin(Angle), -cos(Angle));
+		Delta = sf::Time::Zero;
+		Clock.restart();
+		isBlinking = true;
+		NumberOfBlinks = 0;
 	}
+	
+
+	Delta += Clock.getElapsedTime();
+	Clock.restart();
+
+	if(Delta.asMilliseconds() > 50)
+	{
+		DontDraw = !DontDraw;
+		Delta = sf::Time::Zero;
+		++NumberOfBlinks;
+	}
+
+	if(NumberOfBlinks == 6)
+	{
+		Blink = false;
+		isBlinking = false;
+	}
+}
+
+unsigned int Player::getHP()
+{
+	return HP;
 }
 
 bool Player::canMove()
@@ -118,7 +145,7 @@ bool Player::canMove()
 	}
 
 	if((GameArea.top > ActualPosition.y && Direction.y < 0)
-	   || (GameArea.top + GameArea.height < ActualPosition.y + SIZE.y - 3
+	   || (GameArea.top + GameArea.height < ActualPosition.y + SIZE.y - 1
 		   && Direction.y > 0))
 	{
 		Result = false;
@@ -148,6 +175,29 @@ void Player::handleInput()
 	{
 		Direction.x += 1;
 	}
+}
+
+void Player::handleCollision(Asteroid& Object)
+{
+	sf::FloatRect PlayerBounds = Sprite.getGlobalBounds();
+
+	if(ActualMode == Moving)
+	{
+		PlayerBounds.height -= 2;
+	}
+
+	if(Sprite.getGlobalBounds().intersects(Object.getGlobalBounds()) 
+	   && !Blink)
+	{
+		Object.destroy();
+		Blink = true;
+		--HP;
+	}
+}
+
+bool Player::didLose()
+{
+	return HP == 0;
 }
 
 Player::~Player()

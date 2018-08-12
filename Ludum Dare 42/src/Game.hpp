@@ -19,12 +19,26 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 #pragma once
 #include "Player.hpp"
 #include "Asteroid.hpp"
+#include "HPIndicator.hpp"
+#include "Menu.hpp"
 #include <SFML/Graphics.hpp>
 #include <vector>
 #include <memory>
+#include <random>
+#include <string>
+#include <sstream>
 
 class Game
 {
+	enum State
+	{
+		Splash, 
+		MainMenu,
+		Play, 
+		End, 
+		Restart
+	};
+
 public:
 	Game();
 	void start();
@@ -32,15 +46,34 @@ public:
 
 private:
 	static const sf::Color BACKGROUND_COLOR;
+	static const unsigned int NUMBER_OF_STARTING_ASTEROIDS = 3;
 
 	sf::RenderWindow Window;
 	sf::IntRect GameArea;
+	sf::Sprite SplashScreen;
+	sf::Texture SplashScreenTexture;
+	sf::Clock SpawnClock, PointsClock;
+	sf::Text PointsCounter;
+
+	State ActualState;
 	Player MainPlayer;
+	Menu MenuSystem;
+	HPIndicator Indicator;
 	std::vector<std::unique_ptr<Asteroid>> Asteroids;
 
+	bool wasGameStarted = false;
+	unsigned int NumberOfFrames = 0, NextSpawn;
+	unsigned long long int Points;
+
+	void initPointsCounter();
+	void restart();
 	void processEvents();
 	void render();
 	void update();
+	void updateAsteroids();
+	void updatePoints();
+	void updatePointsCounter();
+	void spawnAsteroids();
 	void handleInput();
 };
 

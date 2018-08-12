@@ -17,55 +17,26 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
 #pragma once
-#include "Asteroid.hpp"
 #include <SFML/Graphics.hpp>
+#include <vector>
+#include <memory>
 
-#define _USE_MATH_DEFINES
-#include <math.h>
-
-class Player : public sf::Drawable
+class HPIndicator : public sf::Drawable
 {
-	enum Mode
-	{
-		Idle = 0,
-		Moving
-	};
-
 public:
-	Player(const sf::IntRect& GameArea);
-	void init();
+	HPIndicator(const sf::IntRect& GameArea);
 	void draw(sf::RenderTarget& Target, sf::RenderStates States) const;
-	void update();
-	void handleInput();
-	void handleCollision(Asteroid& Object);
-	bool didLose();
-	unsigned int getHP();
-	~Player();
+	void update(unsigned int HP);
+	~HPIndicator();
 
 private:
-	const sf::IntRect GameArea;
-	const sf::Vector2f SIZE = { 18, 18 };
-	const int MAX_HP = 6;
-	const float MAX_SPEED = 3.0f,
-		ACCELERATION = 0.75f,
-		DECELERATION = 0.5f;
+	const sf::Vector2f SIZE = { 18, 18};
 
-	sf::Sprite Sprite;
 	sf::Image SpriteSheet;
-	sf::Texture SpriteTexture;
-	sf::Vector2f  Direction;
-	sf::Clock Clock;
-	sf::Time Delta;
+	sf::Texture FullTexture, HalfTexture;
+	sf::IntRect GameArea;
+	std::vector<std::unique_ptr<sf::Sprite>> Hearts;
 
-	Mode ActualMode;
-
-	float Speed = 0;
-	unsigned int HP = 6, NumberOfBlinks = 0;
-	bool Blink, isBlinking, DontDraw = false;
-
-	void setSpriteTexture();
-	void move();
-	bool canMove();
-	void blink();
+	unsigned int HP;
 };
 

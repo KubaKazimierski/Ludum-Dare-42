@@ -23,11 +23,36 @@ const sf::Color Game::BACKGROUND_COLOR
 
 Game::Game()
 	: Window(sf::VideoMode(160, 144), "IAB", sf::Style::Titlebar | sf::Style::Close),
-	 GameArea(0, 0, Window.getSize().x, Window.getSize().y), MainPlayer(GameArea)
+	 GameArea(0, 0, Window.getSize().x, Window.getSize().y),
+	 MainPlayer(GameArea), Indicator(GameArea), MenuSystem(GameArea), ActualState(Splash)
 {
-	Asteroids.push_back(std::make_unique<Asteroid>(GameArea));
-	Asteroids.push_back(std::make_unique<Asteroid>(GameArea));
-	Asteroids.push_back(std::make_unique<Asteroid>(GameArea));
+	SplashScreenTexture.loadFromFile("assets/SplashScreen.png");
+	SplashScreen.setTexture(SplashScreenTexture);
+	SplashScreen.setPosition(0, 0);
+
+	initPointsCounter();
+	restart();
+}
+
+void Game::initPointsCounter()
+{
+	PointsCounter.setFont(MenuSystem.getFont());
+	PointsCounter.setCharacterSize(15);
+	PointsCounter.setPosition(
+		GameArea.left + 5,
+		GameArea.top + 5
+	);
+	PointsCounter.setFillColor(sf::Color(139, 172, 15, 255));
+	PointsCounter.setOutlineColor(sf::Color(155, 188, 15, 255));
+	PointsCounter.setString("000000");
+}
+
+void Game::restart()
+{
+	Points = 0;
+	MainPlayer.init();
+	Asteroids.clear();
+	PointsClock.restart();
 }
 
 void Game::start()
@@ -43,6 +68,7 @@ void Game::start()
 	while(Window.isOpen())
 	{
 		Delta += Clock.getElapsedTime();
+		Clock.restart();
 
 		if(Delta.asMilliseconds() >= ONE_FRAME_TIME)
 		{
@@ -71,32 +97,195 @@ void Game::processEvents()
 
 void Game::update()
 {
-	MainPlayer.update();
-
-	for(size_t i = 0; i < Asteroids.size(); ++i)
+	switch(ActualState)
 	{
-		Asteroids[i]->update();
-
-		for(size_t j = i + 1; j < Asteroids.size(); ++j)
+		case Restart:
 		{
+			restart();
+			ActualState = Play;
+		}
+
+		case Play:
+		{
+			spawnAsteroids();
+
+			MainPlayer.update();
+			updateAsteroids();
+			Indicator.update(MainPlayer.getHP());
+
+			if(MainPlayer.didLose())
+			{
+				ActualState = End;
+			}
+
+			updatePoints();
+			updatePointsCounter();
+
+			break;
+		}
+		
+		case End:
+		{
+			MenuSystem.updateScore(PointsCounter.getString());
+		}
+		case MainMenu:
+		{
+			MenuSystem.update();
+
+			Menu::Request ActualRequest = MenuSystem.getRequest();
+
+			if(ActualRequest == Menu::Request::Restart)
+			{
+				ActualState = Restart;
+			}
+
+			if(ActualRequest == Menu::Request::Quit)
+			{
+				Window.close();
+			}
+
+			break;
+		}
+
+		case Splash:
+		{
+			++NumberOfFrames;
+
+			if(NumberOfFrames == 50)
+			{
+				ActualState = MainMenu;
+			}
+			break;
+		}
+	}
+	
+}
+
+void Game::updateAsteroids()
+{
+	for(int i = 0; i < Asteroids.size(); ++i)
+	{
+		MainPlayer.handleCollision(*Asteroids[i]);
+
+		for(size_t j = 0; j < Asteroids.size(); ++j)
+		{
+			if(j == i)
+			{
+				continue;
+			}
+
 			Asteroids[i]->handleCollision(*Asteroids[j]);
+		}
+
+		if(Asteroids[i]->shouldBeRemoved())
+		{
+			Asteroids.erase(Asteroids.begin() + i);
+			--i;
+		}
+
+		if(i != -1)
+		{
+			Asteroids[i]->update();
 		}
 	}
 }
 
+void Game::spawnAsteroids()
+{
+	std::random_device Device;
+	std::uniform_int_distribution<unsigned int> TimeDistribution(1500, 2500);
+
+	if(!wasGameStarted)
+	{
+		for(int i = 0; i < NUMBER_OF_STARTING_ASTEROIDS; ++i)
+		{
+			Asteroids.push_back(std::make_unique<Asteroid>(GameArea));
+		}
+		wasGameStarted = true;
+		NextSpawn = TimeDistribution(Device);
+	}
+	else if(SpawnClock.getElapsedTime().asMilliseconds() > NextSpawn)
+	{
+		Asteroids.push_back(std::make_unique<Asteroid>(GameArea));
+		NextSpawn = TimeDistribution(Device);
+		SpawnClock.restart();
+	}
+}
+
+void Game::updatePoints()
+{
+	if(PointsClock.getElapsedTime().asSeconds() > 1)
+	{
+		Points += 5;
+		Points += Asteroids.size() * 2;
+		PointsClock.restart();
+	}
+}
+
+void Game::updatePointsCounter()
+{
+	const size_t NumberOfAdditionalZeros  
+		= 6 - static_cast<size_t>(std::log10(Points));
+	std::stringstream NewText;
+
+	for(size_t i = 0; i < NumberOfAdditionalZeros; ++i)
+	{
+		NewText << '0';
+	}
+
+	NewText << Points;
+
+	PointsCounter.setString(NewText.str());
+	
+}
+
 void Game::handleInput()
 {
-	MainPlayer.handleInput();
+	switch(ActualState)
+	{
+		case Play:
+			MainPlayer.handleInput();
+			break;
+
+		case MainMenu:
+		case End:
+			MenuSystem.handleInput();
+			break;
+	}
+	
 }
 
 void Game::render()
 {
 	Window.clear(BACKGROUND_COLOR);
-	Window.draw(MainPlayer);
 
-	for(auto& Asteroid : Asteroids)
+	switch(ActualState)
 	{
-		Window.draw(*Asteroid);
+		case Play:
+		{
+			Window.draw(MainPlayer);
+
+			for(auto& Asteroid : Asteroids)
+			{
+				Window.draw(*Asteroid);
+			}
+
+			Window.draw(Indicator);
+			Window.draw(PointsCounter);
+
+			break;
+		}
+
+		case MainMenu:
+		case End:
+		{
+			Window.draw(MenuSystem);
+			break;
+		}
+
+		case Splash:
+			Window.draw(SplashScreen);
+			break;
 	}
 
 	Window.display();

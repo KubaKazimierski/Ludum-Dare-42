@@ -30,23 +30,36 @@ public:
 	Asteroid(const sf::IntRect& GameArea);
 	void draw(sf::RenderTarget& Target, sf::RenderStates States) const;
 	void update();
-	void handleCollision(const Asteroid& Object);
+	void handleCollision(Asteroid& Object);
+	sf::FloatRect getGlobalBounds();
+	void destroy();
+	bool shouldBeRemoved();
 	~Asteroid();
 
 private:
+	static sf::Image SpriteSheet, ExplosionSheet;
+	static bool wereSheetsLoaded;
+
 	const sf::IntRect GameArea;
-	const float MIN_SPEED = 0.005f, MAX_SPEED = 0.008f;
+	const float MIN_SPEED = 1.5f, MAX_SPEED = 2.0f;
 	const sf::Vector2f SIZE = { 18, 18 };
+	const sf::FloatRect NotExist = { 1000, 1000, 1, 1 };
 
+	int Angle;
 	float Speed;
+	bool isBeingDestroyed = false;
+	unsigned int State = 0;
 
-	sf::Sprite Sprite;
-	sf::Image SpriteSheet;
+	sf::FloatRect LastPenetration;
+
+	sf::CircleShape Sprite;
 	sf::Texture SpriteTexture;
 	sf::Vector2f Direction;
+	sf::Clock Clock;
 
-	const Asteroid* LastCollision = NULL;
+	Asteroid* LastCollision;
 
 	void randomize();
+	void move();
 };
 

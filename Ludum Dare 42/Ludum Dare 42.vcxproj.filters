@@ -13,6 +13,9 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Resource Files\Font">
+      <UniqueIdentifier>{3bbb6b75-3e69-45e4-902c-b50a86e3c76c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Main.cpp">
@@ -27,6 +30,12 @@
     <ClCompile Include="src\Asteroid.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\HPIndicator.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\Menu.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Game.hpp">
@@ -38,12 +47,30 @@
     <ClInclude Include="src\Asteroid.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\HPIndicator.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\Menu.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="assets\Spaceship.png">
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="assets\Asteroids.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\Heart.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\Explosion.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\Splashscreen.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="assets\Logo.png">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>
@@ -54,5 +81,20 @@
     <None Include="assets\Spaceship.aseprite">
       <Filter>Resource Files</Filter>
     </None>
+    <None Include="assets\Heart.aseprite">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="assets\Explosion.aseprite">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="assets\Splashscreen.aseprite">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="assets\Logo.aseprite" />
+  </ItemGroup>
+  <ItemGroup>
+    <Font Include="assets\font\LCD_Solid.ttf">
+      <Filter>Resource Files\Font</Filter>
+    </Font>
   </ItemGroup>
 </Project>

@@ -17,55 +17,61 @@ along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
 #pragma once
-#include "Asteroid.hpp"
 #include <SFML/Graphics.hpp>
+#include <vector>
+#include <memory>
+#include <string>
 
-#define _USE_MATH_DEFINES
-#include <math.h>
-
-class Player : public sf::Drawable
+class Menu : public sf::Drawable
 {
-	enum Mode
+	enum Type
 	{
-		Idle = 0,
-		Moving
+		MainMenu,
+		AboutScreen,
+		EndMenu
 	};
 
 public:
-	Player(const sf::IntRect& GameArea);
-	void init();
-	void draw(sf::RenderTarget& Target, sf::RenderStates States) const;
+
+	enum Request
+	{
+		Null,
+		Restart,
+		Quit
+	};
+
+	Menu(const sf::IntRect& GameArea);
 	void update();
+	void updateScore(const std::string& NewScore);
 	void handleInput();
-	void handleCollision(Asteroid& Object);
-	bool didLose();
-	unsigned int getHP();
-	~Player();
+	const sf::Font& getFont();
+	Request getRequest();
+	void draw(sf::RenderTarget& Target, sf::RenderStates States) const;
+	~Menu();
 
 private:
+	static bool isFontLoaded;
+	static const unsigned int OPTION_SIZE = 15,
+		TIME_BETWEEN_MENU_CHANGE = 400;
+
 	const sf::IntRect GameArea;
-	const sf::Vector2f SIZE = { 18, 18 };
-	const int MAX_HP = 6;
-	const float MAX_SPEED = 3.0f,
-		ACCELERATION = 0.75f,
-		DECELERATION = 0.5f;
 
+	unsigned int SelectedOption = 0;
+	bool areTextsSet = false, drawPointer = false;
+
+	sf::Font Font;
 	sf::Sprite Sprite;
-	sf::Image SpriteSheet;
-	sf::Texture SpriteTexture;
-	sf::Vector2f  Direction;
-	sf::Clock Clock;
-	sf::Time Delta;
+	sf::Texture Texture;
+	sf::Text Pointer;
+	sf::Clock MenuChangeClock, PointerClock;
 
-	Mode ActualMode;
+	Type ActualType;
+	Request ActualRequest;
+	std::vector<std::unique_ptr<sf::Text>> Texts;
 
-	float Speed = 0;
-	unsigned int HP = 6, NumberOfBlinks = 0;
-	bool Blink, isBlinking, DontDraw = false;
-
-	void setSpriteTexture();
-	void move();
-	bool canMove();
-	void blink();
+	void setTexts();
+	void updatePointer();
+	inline void restartPointer();
+	
 };
 
