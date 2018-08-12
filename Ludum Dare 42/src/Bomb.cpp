@@ -30,8 +30,9 @@ void Bomb::randomize()
 {
 	std::random_device Device;
 	std::uniform_real_distribution<float> Position[2]
-		= { std::uniform_real_distribution<float>(GameArea.left + 6, GameArea.left + GameArea.width - 6),
-		std::uniform_real_distribution<float>(GameArea.top + Sprite.getGlobalBounds().width + 5, GameArea.top + GameArea.height - Sprite.getGlobalBounds().width - 5) };
+		= { std::uniform_real_distribution<float>(static_cast<float>(GameArea.left + 6), static_cast<float>(GameArea.left + GameArea.width - 6)),
+		std::uniform_real_distribution<float>(static_cast<float>(GameArea.top + Sprite.getGlobalBounds().width + 5),
+											  static_cast<float>(GameArea.top + GameArea.height - Sprite.getGlobalBounds().width - 5)) };
 
 	Sprite.setPosition(Position[0](Device), Position[1](Device));
 }

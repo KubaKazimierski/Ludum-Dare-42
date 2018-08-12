@@ -43,8 +43,8 @@ void Game::initPointsCounter()
 	PointsCounter.setFont(MenuSystem.getFont());
 	PointsCounter.setCharacterSize(15);
 	PointsCounter.setPosition(
-		GameArea.left + 5,
-		GameArea.top + 5
+		static_cast<float>(GameArea.left + 5),
+		static_cast<float>(GameArea.top + 5)
 	);
 	PointsCounter.setFillColor(sf::Color(139, 172, 15, 255));
 	PointsCounter.setOutlineColor(sf::Color(155, 188, 15, 255));
@@ -172,7 +172,7 @@ void Game::update()
 
 void Game::updateAsteroids()
 {
-	for(int i = 0; i < Asteroids.size(); ++i)
+	for(size_t i = 0; i < Asteroids.size(); ++i)
 	{
 		MainPlayer.handleCollision(*Asteroids[i]);
 
@@ -201,7 +201,7 @@ void Game::updateAsteroids()
 
 void Game::updateBombs()
 {
-	for(int i = 0; i < Bombs.size(); ++i)
+	for(size_t i = 0; i < Bombs.size(); ++i)
 	{
 		Bombs[i]->update();
 		MainPlayer.handleCollision(*Bombs[i]);
@@ -244,7 +244,7 @@ void Game::spawnAsteroids()
 void Game::spawnBombs()
 {
 	std::random_device Device;
-	std::uniform_int_distribution<unsigned int> NextPowerUpDistribution(9, 15);
+	std::uniform_int_distribution<unsigned int> NextPowerUpDistribution(7, 15);
 
 	if(BombClock.getElapsedTime().asSeconds() > NextBomb)
 	{
@@ -263,7 +263,7 @@ void Game::bomb()
 		std::random_device Device;
 		std::uniform_int_distribution<unsigned int> AsteroidsDistribution;
 
-		for(int i = 0;
+		for(size_t i = 0;
 			  i < (NUMBER_OF_ASTEROIDS < 2 ? 1 : NUMBER_OF_ASTEROIDS / 2); ++i)
 		{
 			AsteroidsDistribution =

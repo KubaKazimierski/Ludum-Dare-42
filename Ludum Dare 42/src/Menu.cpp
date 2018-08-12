@@ -73,8 +73,8 @@ void Menu::setTexts()
 						sf::Color(155, 188, 15, 255)
 					);
 					(*ActualText)->setPosition(
-						GameArea.left + GameArea.width / 2 + (i == 1 ? 15 : -((*ActualText)->getGlobalBounds().width + 15)),
-						GameArea.top + GameArea.height - 50
+						static_cast<float>(GameArea.left + GameArea.width / 2 + (i == 1 ? 15 : -((*ActualText)->getGlobalBounds().width + 15))),
+						static_cast<float>(GameArea.top + GameArea.height - 50)
 					);
 				}
 
@@ -92,8 +92,8 @@ void Menu::setTexts()
 					sf::Color(155, 188, 15, 255)
 				);
 				(*ActualText)->setPosition(
-					GameArea.left + 10,
-					GameArea.top + GameArea.height - 25
+					static_cast<float>(GameArea.left + 10),
+					static_cast<float>(GameArea.top + GameArea.height - 25)
 				);
 
 				break;
@@ -120,8 +120,8 @@ void Menu::setTexts()
 						sf::Color(155, 188, 15, 255)
 					);
 					(*ActualText)->setPosition(
-						GameArea.left + GameArea.width / 2  -((*ActualText)->getGlobalBounds().width  / 2),
-						(i == 1 ? GameArea.top + 1 : GameArea.top + GameArea.height - 20)
+						static_cast<float>(GameArea.left + GameArea.width / 2  -((*ActualText)->getGlobalBounds().width  / 2)),
+						static_cast<float>((i == 1 ? GameArea.top + 1 : GameArea.top + GameArea.height - 20))
 					);
 				}
 
@@ -152,7 +152,7 @@ void Menu::setTexts()
 					sf::Color(155, 188, 15, 255)
 				);
 
-				(*ActualText)->setPosition(GameArea.left + 5,
+				(*ActualText)->setPosition(static_cast<float>(GameArea.left + 1),
 					(*(Texts.begin() + 1))->getGlobalBounds().top + (*(Texts.begin() + 1))->getGlobalBounds().height + 2);
 
 				break;
@@ -179,8 +179,8 @@ void Menu::setTexts()
 						sf::Color(155, 188, 15, 255)
 					);
 					(*ActualText)->setPosition(
-						GameArea.left + GameArea.width / 2 + (i == 1 ? 30 : -((*ActualText)->getGlobalBounds().width)),
-						GameArea.top + GameArea.height - 20
+						static_cast<float>(GameArea.left + GameArea.width / 2 + (i == 1 ? 30 : -((*ActualText)->getGlobalBounds().width))),
+						static_cast<float>(GameArea.top + GameArea.height - 20)
 					);
 
 				}

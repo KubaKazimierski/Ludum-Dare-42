@@ -35,7 +35,7 @@ Asteroid::Asteroid(const sf::IntRect& GameArea)
 	ExplosionSound.openFromFile("assets/Explosion.wav");
 
 	randomize();
-	Sprite.setRadius(9);
+	Sprite.setRadius(8);
 	Sprite.setTexture(&SpriteTexture);
 }
 
@@ -53,7 +53,7 @@ void Asteroid::randomize()
 
 	Angle = Direction_Distribution(Device);
 
-	Direction = sf::Vector2f(std::sin(Angle), -std::cos(Angle));
+	Direction = sf::Vector2f(static_cast<float>(std::sin(Angle)), static_cast<float>(-std::cos(Angle)));
 
 	std::uniform_int_distribution<int>
 		Texture_Distribution(0, 9);
@@ -62,14 +62,14 @@ void Asteroid::randomize()
 								sf::IntRect(static_cast<int>(SIZE.x * Texture_Distribution(Device)), 0,
 											static_cast<int>(SIZE.x), static_cast<int>(SIZE.y)));
 	std::uniform_real_distribution<float>
-		Scale_Distribution(0.8, 1.8);
+		Scale_Distribution(0.8f, 2.0f);
 	float LinearScale = Scale_Distribution(Device);
 	Sprite.setScale(sf::Vector2f(LinearScale, LinearScale));
 
 	std::uniform_real_distribution<float>
-		Position_Distribution(GameArea.left, GameArea.left + GameArea.width);
+		Position_Distribution(static_cast<float>(GameArea.left), static_cast<float>(GameArea.left + GameArea.width));
 
-	Sprite.setPosition(Position_Distribution(Device), GameArea.top + GameArea.height + 40);
+	Sprite.setPosition(Position_Distribution(Device), static_cast<float>(GameArea.top + GameArea.height + 40));
 }
 
 void Asteroid::draw(sf::RenderTarget& Target, sf::RenderStates States) const
@@ -104,7 +104,7 @@ void Asteroid::move()
 	   || ActualPosition.x >= GameArea.width + 38)
 	{
 		ActualPosition.x
-			= (ActualPosition.x > 0
+			= static_cast<float>(ActualPosition.x > 0
 			   ? GameArea.left - 28
 			   : GameArea.width + 28);
 	}
@@ -113,7 +113,7 @@ void Asteroid::move()
 	   || ActualPosition.y >= GameArea.height + 38)
 	{
 		ActualPosition.y
-			= (ActualPosition.y > 0
+			= static_cast<float>(ActualPosition.y > 0
 			   ? GameArea.top - 28
 			   : GameArea.height + 28);
 	}

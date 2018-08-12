@@ -33,7 +33,7 @@ public:
 	~Bomb();
 
 private:
-	const unsigned int EXPIRE_TIME = 10;
+	const unsigned int EXPIRE_TIME = 6;
 	const sf::IntRect GameArea;
 
 	sf::Sprite Sprite;

@@ -41,7 +41,7 @@ void Player::init()
 void Player::setSpriteTexture()
 {
 	SpriteTexture.loadFromImage(SpriteSheet,
-								sf::IntRect(SIZE.x * ActualMode, 0,
+								sf::IntRect(static_cast<int>(SIZE.x * ActualMode), 0,
 											static_cast<int>(SIZE.x),
 											static_cast<int>(SIZE.y)));
 	Sprite.setTexture(SpriteTexture);

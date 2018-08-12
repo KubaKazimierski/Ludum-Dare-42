@@ -64,7 +64,7 @@ private:
 	std::vector<std::unique_ptr<Bomb>> Bombs;
 
 	bool wasGameStarted = false;
-	unsigned int NumberOfFrames = 0, NextSpawn, NextBomb = 15;
+	int NumberOfFrames = 0, NextSpawn, NextBomb = 15;
 	unsigned long long int Points;
 
 	void initPointsCounter();

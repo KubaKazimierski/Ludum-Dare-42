@@ -22,8 +22,8 @@ HPIndicator::HPIndicator(const sf::IntRect& GameArea)
 	: GameArea(GameArea)
 {
 	SpriteSheet.loadFromFile("assets/Heart.png");
-	FullTexture.loadFromImage(SpriteSheet, sf::IntRect(0, 0, SIZE.x, SIZE.y));
-	HalfTexture.loadFromImage(SpriteSheet, sf::IntRect(SIZE.x, 0, SIZE.x, SIZE.y));
+	FullTexture.loadFromImage(SpriteSheet, sf::IntRect(0, 0, static_cast<int>(SIZE.x), static_cast<int>(SIZE.y)));
+	HalfTexture.loadFromImage(SpriteSheet, sf::IntRect(static_cast<int>(SIZE.x), 0, static_cast<int>(SIZE.x), static_cast<int>(SIZE.y)));
 }
 
 void HPIndicator::update(unsigned int HP)
@@ -49,8 +49,8 @@ void HPIndicator::update(unsigned int HP)
 		for(size_t i = 0; i < Hearts.size(); ++i)
 		{
 			Hearts[i]->setScale(0.5, 0.5);
-			Hearts[i]->setPosition(GameArea.left + 5 + ((SIZE.x / 2  + 2) * i),
-								   GameArea.top + GameArea.height - 15);
+			Hearts[i]->setPosition(static_cast<float>(GameArea.left + 5 + ((SIZE.x / 2  + 2) * i)),
+								   static_cast<float>(GameArea.top + GameArea.height - 15));
 		}
 	}
 	
