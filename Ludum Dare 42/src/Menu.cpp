@@ -134,7 +134,7 @@ void Menu::setTexts()
 					"You can collect bombs to\n"
 					"remove half of asteroids."
 					"\nControls:\n"
-					"[ W, S, A, D ] - movement\n"
+					"Arrows keys - movement\n"
 					"\nGame is licensed under\n"
 					"GNU GPLv3";
 
