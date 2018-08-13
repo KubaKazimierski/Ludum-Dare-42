@@ -258,14 +258,14 @@ void Menu::handleInput()
 		case MainMenu:
 		case EndMenu:
 		{
-			if(sf::Keyboard::isKeyPressed(sf::Keyboard::D)
+			if(sf::Keyboard::isKeyPressed(sf::Keyboard::Right)
 			   && SelectedOption != 1)
 			{
 				SelectedOption = 1;
 				restartPointer();
 			}
 
-			if(sf::Keyboard::isKeyPressed(sf::Keyboard::A)
+			if(sf::Keyboard::isKeyPressed(sf::Keyboard::Left)
 			   && SelectedOption != 0)
 			{
 				SelectedOption = 0;

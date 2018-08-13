@@ -190,22 +190,22 @@ bool Player::canMove()
 
 void Player::handleInput()
 {
-	if(sf::Keyboard::isKeyPressed(sf::Keyboard::W))
+	if(sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
 	{
 		Direction.y -= 1;
 	}
 
-	if(sf::Keyboard::isKeyPressed(sf::Keyboard::S))
+	if(sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
 	{
 		Direction.y += 1;
 	}
 
-	if(sf::Keyboard::isKeyPressed(sf::Keyboard::A))
+	if(sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
 	{
 		Direction.x -= 1;
 	}
 
-	if(sf::Keyboard::isKeyPressed(sf::Keyboard::D))
+	if(sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
 	{
 		Direction.x += 1;
 	}
